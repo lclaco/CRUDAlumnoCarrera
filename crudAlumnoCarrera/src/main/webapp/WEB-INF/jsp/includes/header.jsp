@@ -13,9 +13,7 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="/cft-web/AlumnoController?accion=form">Crear</a></li>
-            <li><a class="dropdown-item" href="/cft-web/AlumnoController?accion=form">Ver</a></li>
-            <li><a class="dropdown-item" href="/cft-web/AlumnoController?accion=form">Actualizar</a></li>
-            <li><a class="dropdown-item" href="/cft-web/AlumnoController?accion=form">Eliminar</a></li>            
+            <li><a class="dropdown-item" href="/cft-web/AlumnoController?accion=listar">Ver</a></li>                   
           </ul>          
         </li>
         <li class="nav-item dropdown">
@@ -23,10 +21,8 @@
             Carreras
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="/cft-web/AlumnoController?accion=form">Crear</a></li>
-            <li><a class="dropdown-item" href="/cft-web/AlumnoController?accion=form">Ver</a></li>
-            <li><a class="dropdown-item" href="/cft-web/AlumnoController?accion=form">Actualizar</a></li>
-            <li><a class="dropdown-item" href="/cft-web/AlumnoController?accion=form">Eliminar</a></li>            
+            <li><a class="dropdown-item" href="/cft-web/CarreraController?accion=form">Crear</a></li>
+            <li><a class="dropdown-item" href="/cft-web/CarreraController?accion=listar">Ver</a></li>            
           </ul>          
         </li>
       </ul>

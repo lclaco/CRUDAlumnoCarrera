@@ -23,10 +23,13 @@ import javax.sql.DataSource;
 
 import dao.AlumnoDAO;
 import dao.AlumnoDAOImp;
+import dao.CarreraDAO;
+import dao.CarreraDAOImp;
 
 public class AlumnoController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
+	private CarreraDAO carreraDAO;
 	private AlumnoDAO alumnoDAO;
 
     public AlumnoController() {
@@ -36,7 +39,8 @@ public class AlumnoController extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		this.alumnoDAO = new AlumnoDAOImp();
+		this.carreraDAO = new CarreraDAOImp();
+		this.alumnoDAO = new AlumnoDAOImp(this.carreraDAO);
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -76,9 +80,18 @@ public class AlumnoController extends HttpServlet {
 				break;
 			case "form":
 				vistaJSP = "/WEB-INF/jsp/vista/alumno/alumno-form.jsp";
+				List<Carrera> carreras = null;
+				try {
+				carreras = carreraDAO.findAllCarreras();
+				} catch(Exception e) {
+				e.printStackTrace();
+				response.sendError(500);
+				return;
+				}
+				request.setAttribute("carreras", carreras);
 				request
-					.getRequestDispatcher(vistaJSP)
-					.forward(request, response)
+				.getRequestDispatcher(vistaJSP)
+				.forward(request, response)
 				;
 				break;
 			case "listar":
@@ -92,6 +105,7 @@ public class AlumnoController extends HttpServlet {
 					;
 				} catch (SQLException | NamingException e) {				
 					response.sendError(500);
+					e.printStackTrace();
 				}
 				break;
 			default:
@@ -108,7 +122,16 @@ public class AlumnoController extends HttpServlet {
 		}
 		
 		String nombre 	= request.getParameter("nombre");
-		String carrera 	= request.getParameter("carrera");		
+		Carrera carrera =null;
+		
+		try {
+		int carreraId 	=Integer.parseInt(request.getParameter("carrera_id"));		
+		carrera = carreraDAO.findCarreraById(carreraId);
+		}catch(SQLException | NamingException e) {
+			e.printStackTrace();
+			response.sendError(500);
+			return;
+		}
 		
 		// al servlet le llega el parámetro como string 
 		// el control input[date] de HTML5 devuelve el string en formato ISO8601 (yyyy-mm-dd) 

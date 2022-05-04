@@ -84,6 +84,7 @@ public class CarreraController extends HttpServlet {
 					;
 				} catch (SQLException | NamingException e) {				
 					response.sendError(500);
+					e.printStackTrace();
 				}
 				break;
 			default:

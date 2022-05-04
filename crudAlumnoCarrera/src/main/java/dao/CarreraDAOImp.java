@@ -22,7 +22,7 @@ public class CarreraDAOImp implements CarreraDAO {
 			List<Carrera> carreras = new ArrayList<>();
 			while(rs.next()) {
 				// recuperar a variables datos de la tabla 
-				int id = rs.getInt("id");
+				int id = rs.getInt("carreras_id");
 				String nombre = rs.getString("nombre");				
 				Carrera carrera = new Carrera(id, nombre);
 				// agregar a la lista
@@ -34,7 +34,7 @@ public class CarreraDAOImp implements CarreraDAO {
 
 	@Override
 	public Carrera findCarreraById(int carreraId) throws SQLException, NamingException {
-		String sql = "SELECT * FROM carreras WHERE id = ?";
+		String sql = "SELECT * FROM carreras WHERE carreras_id = ?";
 		try (
 			Connection conexion = DbUtils.getConexion();
 			PreparedStatement declaracion = conexion.prepareStatement(sql);
@@ -42,7 +42,7 @@ public class CarreraDAOImp implements CarreraDAO {
 			declaracion.setInt(1, carreraId);
 			ResultSet rs = declaracion.executeQuery();
 			if(rs.next()) {
-				int id = rs.getInt("id");
+				int id = rs.getInt("carreras_id");
 				String nombre = rs.getString("nombre");
 				return new Carrera(id, nombre);
 			} else {
@@ -67,7 +67,7 @@ public class CarreraDAOImp implements CarreraDAO {
 	public void editarCarrera(Carrera carrera) throws SQLException, NamingException {
 		String sql = "UPDATE carreras"
 				+" SET nombre = ?"
-				+" WHERE id = ?";
+				+" WHERE carreras_id = ?";
 		try (
 			Connection conexion = DbUtils.getConexion();
 			PreparedStatement declaracion = conexion.prepareStatement(sql);
@@ -82,7 +82,7 @@ public class CarreraDAOImp implements CarreraDAO {
 	public void borrarCarrera(int carreraId) throws SQLException, NamingException {
 		try (
 			Connection conexion = DbUtils.getConexion();
-			PreparedStatement declaracion = conexion.prepareStatement("DELETE FROM carreras WHERE id = ?");
+			PreparedStatement declaracion = conexion.prepareStatement("DELETE FROM carreras WHERE carreras_id = ?");
 		) {
 			declaracion.setInt(1, carreraId);
 			int filasEliminadas = declaracion.executeUpdate();

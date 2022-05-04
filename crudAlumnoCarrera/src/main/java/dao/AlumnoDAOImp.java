@@ -32,7 +32,7 @@ public class AlumnoDAOImp implements AlumnoDAO {
 			List<Alumno> alumnos = new ArrayList<>();
 			while(rs.next()) {
 				// recuperar a variables datos de la tabla 
-				int id = rs.getInt("id");
+				int id = rs.getInt("alumno_id");
 				String nombre = rs.getString("nombre");
 				int carreraId = Integer.parseInt( rs.getString("carrera_id") );
 				Carrera carrera = carreraDAO.findCarreraById(carreraId);
@@ -50,12 +50,12 @@ public class AlumnoDAOImp implements AlumnoDAO {
 	public Alumno findAlumnoById(int alumnoId) throws SQLException, NamingException {
 		try (
 			Connection conexion = DbUtils.getConexion();
-			PreparedStatement declaracion = conexion.prepareStatement("SELECT * FROM alumnos WHERE id = ?");
+			PreparedStatement declaracion = conexion.prepareStatement("SELECT * FROM alumnos WHERE alumno_id = ?");
 		) {
 			declaracion.setInt(1, alumnoId);
 			ResultSet rs = declaracion.executeQuery();
 			if(rs.next()) {
-				int id = rs.getInt("id");
+				int id = rs.getInt("alumno_id");
 				String nombre = rs.getString("nombre");
 				int carreraId = Integer.parseInt( rs.getString("carrera_id") );
 				Carrera carrera = carreraDAO.findCarreraById(carreraId);
@@ -75,7 +75,7 @@ public class AlumnoDAOImp implements AlumnoDAO {
 			PreparedStatement declaracion = conexion.prepareStatement(sql);
 		) {
 			declaracion.setString(1, alumno.getNombre());
-			((Object) declaracion).setCarrera(2, alumno.getCarrera());
+			declaracion.setInt(2, alumno.getCarrera().getId());
 			declaracion.setObject(3, alumno.getFechaNacimiento());
 			int filasInsertadas = declaracion.executeUpdate();
 		}	
@@ -85,13 +85,13 @@ public class AlumnoDAOImp implements AlumnoDAO {
 	public void editarAlumno(Alumno alumno) throws SQLException, NamingException {
 		String sql = "UPDATE alumnos"
 				+" SET nombre = ?, carrera = ?, fecha_nacimiento = ?"
-				+" WHERE id = ?";
+				+" WHERE alumno_id = ?";
 		try (
 			Connection conexion = DbUtils.getConexion();
 			PreparedStatement declaracion = conexion.prepareStatement(sql);
 		) {
 			declaracion.setString(1, alumno.getNombre());
-			declaracion.setString(2, alumno.getCarrera());
+			declaracion.setInt(2, alumno.getCarrera().getId());
 			declaracion.setObject(3, alumno.getFechaNacimiento());
 			declaracion.setInt(4, alumno.getId());
 			declaracion.executeUpdate();
@@ -102,7 +102,7 @@ public class AlumnoDAOImp implements AlumnoDAO {
 	public void borrarAlumno(int alumnoId) throws SQLException, NamingException {
 		try (
 			Connection conexion = DbUtils.getConexion();
-			PreparedStatement declaracion = conexion.prepareStatement("DELETE FROM alumnos WHERE id = ?");
+			PreparedStatement declaracion = conexion.prepareStatement("DELETE FROM alumnos WHERE alumno_id = ?");
 		) {
 			declaracion.setInt(1, alumnoId);
 			int filasEliminadas = declaracion.executeUpdate();
