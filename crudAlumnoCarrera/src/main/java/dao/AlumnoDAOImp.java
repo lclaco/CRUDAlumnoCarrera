@@ -34,7 +34,7 @@ public class AlumnoDAOImp implements AlumnoDAO {
 				// recuperar a variables datos de la tabla 
 				int id = rs.getInt("alumno_id");
 				String nombre = rs.getString("nombre");
-				int carreraId = Integer.parseInt( rs.getString("carrera_id") );
+				int carreraId = rs.getInt( rs.getString("carrera_id") );
 				Carrera carrera = carreraDAO.findCarreraById(carreraId);
 				LocalDate fechaNacimiento = rs.getObject("fecha_nacimiento", LocalDate.class);
 				// instanciar objeto alumno 
@@ -57,7 +57,7 @@ public class AlumnoDAOImp implements AlumnoDAO {
 			if(rs.next()) {
 				int id = rs.getInt("alumno_id");
 				String nombre = rs.getString("nombre");
-				int carreraId = Integer.parseInt( rs.getString("carrera_id") );
+				int carreraId = rs.getInt( rs.getString("carrera_id") );
 				Carrera carrera = carreraDAO.findCarreraById(carreraId);
 				LocalDate fechaNacimiento = rs.getObject("fecha_nacimiento", LocalDate.class);
 				return new Alumno(id, nombre, carrera, fechaNacimiento);
